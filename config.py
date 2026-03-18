@@ -6,7 +6,7 @@ All configurable values for the Flappy Flight cybersecurity simulation.
 import os
 
 # ─── Network Configuration ───
-LISTENER_HOST = "0.0.0.0"
+LISTENER_HOST = "10.12.74.31"
 LISTENER_PORT = 4444
 
 # ─── Application Metadata ───
