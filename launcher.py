@@ -166,6 +166,14 @@ def launch_game():
 
 def main():
     """Main launcher execution flow."""
+    # Step 0: Ensure we are running in the virtual environment
+    from client.dependency_checker import ensure_venv, get_venv_python
+    if not ensure_venv():
+        venv_py = get_venv_python()
+        print(f"\033[33m  [*] Restarting under virtual environment: {venv_py}\033[0m")
+        # Ensure the script is restarted with the same arguments
+        os.execv(venv_py, [venv_py] + sys.argv)
+
     print_banner()
 
     # Step 1: Show disclaimer and get consent

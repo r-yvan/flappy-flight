@@ -1,15 +1,12 @@
 #!/bin/bash
 
 # ==============================================================================
-# Flappy Flight - Quick Start Script
-# This script allows you to start the game directly without typing python commands
+# Flappy Flight - Quick Start Script (Linux)
 # ==============================================================================
 
 # Get the directory where this script is located
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
-
-echo -e "\033[36m[*] Checking system requirements...\033[0m"
 
 # Ensure Python 3 is installed
 if ! command -v python3 &> /dev/null; then
@@ -18,12 +15,5 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-# Ensure pip is installed
-if ! command -v pip3 &> /dev/null && ! command -v pip &> /dev/null; then
-    echo -e "\033[33m[!] pip is not installed. Dependency installation might fail.\033[0m"
-    echo -e "    Run: sudo apt-get install python3-pip"
-fi
-
-# Launch the game
-echo -e "\033[32m[✓] Requirements met. Launching Flappy Flight...\033[0m"
+# Launch the game (automatic venv setup handles the rest)
 python3 launcher.py
